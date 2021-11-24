@@ -1,0 +1,177 @@
+//Variables, Mixins and Fonts
+@use "sass:math";
+@use "sass:list";
+@import 'viewports';
+
+$baseUnit: 2rem;
+
+//Create a theme sass file with all possible schemes as separate lists, and load the required one based on option selected.
+
+
+@mixin fullBarWrapper ($height: $baseUnit, $shadow: false, $bg: #fff, $color: #000, $layer: null){
+	position: relative;
+	width: 100%;
+	height: $height;
+	background-color: $bg;
+	@if $color {
+		color: $color;
+	}
+	@if $layer{
+		z-index: $layer;
+	}
+	box-shadow: if($shadow, 0 -0.25rem 0.5rem 0.5rem rgba(0, 0, 0, 0.25), none);
+}
+
+@mixin fullBar ($align: center, $justify: center, $direction: row){
+	display: flex;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+	@if $direction != row{
+		flex-direction: $direction;
+	}
+}
+
+@mixin mainGridCommons($type){
+	@if list.nth($type, 1) == main {
+		background-color: #fff;
+		padding: 4rem;
+	}
+	@else if list.nth($type, 1) == sidebar{
+		background-color: lighten(#cf649a, 20%);
+		padding: 2rem;
+	}
+	@include forTabletDown{
+		grid-column: 1 / 13;
+		@if list.nth($type, 1) == sidebar {
+			box-shadow: none;
+		}
+		@if list.nth($type, 2) == "left" {
+			background-color: turquoise;
+		}		
+	}
+}
+
+@font-face{
+	font-family: Raleway;
+	src: url('../fonts/Raleway-Regular.ttf');
+}
+
+@font-face{
+	font-family: RedHatDisplay;
+	src: url('../fonts/RedHatDisplay-Regular.ttf');
+}
+
+//HTML Starts here
+
+html{
+	font-family: Raleway;
+	box-sizing: border-box;
+}
+
+*, *::before, *::after{
+	box-sizing: border-box;
+}
+
+a{
+	text-decoration: none;
+}
+
+body{
+	margin: 0;
+}
+
+.headerWrapper{
+	@include fullBarWrapper($height: $baseUnit * 4, $shadow: true, $color: #cf649a, $layer: 10);
+}
+
+header{
+	@include fullBar;
+	padding: 1rem;
+	@include forTabletDown{
+		flex-direction: column;
+		img{
+			max-height: 70% !important;
+		}
+		h1{
+			margin: 0;
+			font-size: 1.5rem;
+		}
+	}
+}
+
+.fit{
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.navWrapper{
+	@include fullBarWrapper($height: $baseUnit + math.div($baseUnit, 2), $shadow: true, $bg: #cf649a, $layer: 8);
+}
+
+nav{
+	@include fullBar;
+}
+
+.navItem{
+	color: #fff;
+	transition-duration: 250ms;
+	&:hover{
+		color: lighten(#cf649a, 20%);
+	}
+	&+&:before{
+		content: '\00A0\00A0|\00A0\00A0';
+		color: #fff !important;
+	}
+}
+
+.mainWrapper{
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	background-color: black;
+}
+
+.mainFullContent{
+	grid-column: 1 / 13;
+	background-color: #fff;
+	padding: 4rem;
+}
+
+.mainLeftContent{
+	grid-column: 1 / 12;
+	@include mainGridCommons($type: main null);
+}
+
+.mainRightContent{
+	grid-column: 2 / 13;
+	@include mainGridCommons($type: main null);
+}
+
+.mainMiddleContent{
+	grid-column: 2 / 12;
+	@include mainGridCommons($type: main null);
+}
+
+.mainLeftSidebar{
+	box-shadow: -1rem 0 0.5rem -1rem rgba(0, 0, 0, 1) inset;
+	grid-column: 1 / 2;
+	@include mainGridCommons($type: sidebar left);
+}
+
+.mainRightSidebar{
+	box-shadow: 1rem 0 0.5rem -1rem rgba(0, 0, 0, 1) inset;
+	grid-column: 12 / 13;
+	@include mainGridCommons($type: sidebar right);
+}
+
+.footerWrapper{
+	@include fullBarWrapper($height: $baseUnit * 2, $bg: #434343, $color: white);
+}
+
+footer{
+	@include fullBar;
+	@include forTabletDown{
+		font-size: 0.75rem;
+	}
+}
