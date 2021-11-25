@@ -1,21 +1,41 @@
 //Variables, Mixins and Fonts
+
 @use "sass:math";
 @use "sass:list";
 @import 'viewports';
 
 $baseUnit: 2rem;
 
+:root{
+	//The reason for so many variables is to have the least number of possible variables for the most number of possible unique colours in a single theme.
+	--themeHeader: #fff;
+	--themeHeaderText: #cf649a;
+	--themeOverlaySidebar: #{darken(#cf649a, 20%)};
+	--themeNav: #cf649a;
+	--themeNavLink: #fff;
+	--themeNavLinkHover: #{lighten(#cf649a, 20%)};
+	--themeNavLinkActive: #343434;
+	--themeMainContent: #fff;
+	--themeSideContent: #{lighten(#cf649a, 20%)};
+	--themeFooter: #434343;
+	--themeFooterText: #fff;
+	--themePrimary: #cf649a;									//Headings, Links, Buttons
+	--themePrimaryLight: #{lighten(#cf649a, 20%)};				//Link Hover, Button Hover
+	--themePrimaryDark: #{darken(#cf649a, 20%)};				//Button Click
+	--themeSecondary: #343434;									//Button Alts, Heading Alts
+	--themeSecondaryLight: #{lighten(#343434, 20%)};			//Button Alt Hover
+	--themeSecondaryDark: #{darken(#343434, 20%)};				//Button Alt Click
+	--themeTertiary: #343434;									//Text Color
+}
+
 //Create a theme sass file with all possible schemes as separate lists, and load the required one based on option selected.
+//Or scratch that, create a js martix of theme colours and store the selected theme as a cookie.
 
-
-@mixin fullBarWrapper ($height: $baseUnit, $shadow: false, $bg: #fff, $color: #000, $layer: null){
+@mixin fullBarWrapper ($height: $baseUnit, $shadow: false, $bg: var(--themeHeader), $layer: null){
 	position: relative;
 	width: 100%;
 	height: $height;
 	background-color: $bg;
-	@if $color {
-		color: $color;
-	}
 	@if $layer{
 		z-index: $layer;
 	}
@@ -35,20 +55,23 @@ $baseUnit: 2rem;
 
 @mixin mainGridCommons($type){
 	@if list.nth($type, 1) == main {
-		background-color: #fff;
+		background-color: var(--themeMainContent);
 		padding: 4rem;
 	}
 	@else if list.nth($type, 1) == sidebar{
-		background-color: lighten(#cf649a, 20%);
+		background-color: var(--themeSideContent);
 		padding: 2rem;
 	}
 	@include forTabletDown{
 		grid-column: 1 / 13;
+		@if list.nth($type, 1) == main {
+			padding: 2rem;
+		}
 		@if list.nth($type, 1) == sidebar {
 			box-shadow: none;
 		}
 		@if list.nth($type, 2) == "left" {
-			background-color: turquoise;
+			//background-color: turquoise;
 		}		
 	}
 }
@@ -76,19 +99,38 @@ html{
 
 a{
 	text-decoration: none;
+	transition: color 250ms;
+	color: var(--themePrimary);
+	&:hover{
+		color: var(--themePrimaryLight);
+	}
+	/*
+	&:visited{
+		color: var(--themePrimaryDark);
+	}
+	*/
+}
+
+
+h1, h2, h3, h4, h5, h6{
+	color: var(--themePrimary);
 }
 
 body{
 	margin: 0;
+	color: var(--themeTertiary);
 }
 
 .headerWrapper{
-	@include fullBarWrapper($height: $baseUnit * 4, $shadow: true, $color: #cf649a, $layer: 10);
+	@include fullBarWrapper($height: $baseUnit * 4, $shadow: true, $layer: 10);
 }
 
 header{
 	@include fullBar;
 	padding: 1rem;
+	h1{
+		color: var(--themeHeaderText) 
+	}
 	@include forTabletDown{
 		flex-direction: column;
 		img{
@@ -107,22 +149,51 @@ header{
 }
 
 .navWrapper{
-	@include fullBarWrapper($height: $baseUnit + math.div($baseUnit, 2), $shadow: true, $bg: #cf649a, $layer: 8);
+	@include fullBarWrapper($height: $baseUnit + math.div($baseUnit, 2), $shadow: true, $bg: var(--themeNav), $layer: 8);
 }
 
 nav{
 	@include fullBar;
+	.navItem, .navTheme{
+		transition: color 250ms;
+	}
+
+}
+
+.navLaptop{	
+	@include forTabletDown{
+		display: none;
+	}
+}
+
+.navPhone{
+	.navItem{
+		position: absolute;
+		left: math.div($baseUnit, 2);
+	}
+	@include forNotebookUp{
+		display: none;
+	}
 }
 
 .navItem{
-	color: #fff;
-	transition-duration: 250ms;
+	color: var(--themeNavLink);
 	&:hover{
-		color: lighten(#cf649a, 20%);
+		color: var(--themeNavLinkHover);
 	}
 	&+&:before{
 		content: '\00A0\00A0|\00A0\00A0';
-		color: #fff !important;
+		color: var(--themeNavLink) !important;
+	}
+}
+
+.navTheme{
+	position: absolute;
+	right: math.div($baseUnit, 2);
+	color: var(--themeNavLink);
+	&:hover{
+		cursor: pointer;
+		color: var(--themeNavLinkHover);
 	}
 }
 
@@ -134,44 +205,47 @@ nav{
 
 .mainFullContent{
 	grid-column: 1 / 13;
-	background-color: #fff;
+	background-color: var(--themeMainContent);
 	padding: 4rem;
 }
 
 .mainLeftContent{
-	grid-column: 1 / 12;
+	grid-column: 1 / 11;
 	@include mainGridCommons($type: main null);
 }
 
 .mainRightContent{
-	grid-column: 2 / 13;
+	grid-column: 3 / 13;
 	@include mainGridCommons($type: main null);
 }
 
 .mainMiddleContent{
-	grid-column: 2 / 12;
+	grid-column: 3 / 11;
 	@include mainGridCommons($type: main null);
 }
 
 .mainLeftSidebar{
 	box-shadow: -1rem 0 0.5rem -1rem rgba(0, 0, 0, 1) inset;
-	grid-column: 1 / 2;
+	grid-column: 1 / 3;
 	@include mainGridCommons($type: sidebar left);
 }
 
 .mainRightSidebar{
 	box-shadow: 1rem 0 0.5rem -1rem rgba(0, 0, 0, 1) inset;
-	grid-column: 12 / 13;
+	grid-column: 11 / 13;
 	@include mainGridCommons($type: sidebar right);
 }
 
 .footerWrapper{
-	@include fullBarWrapper($height: $baseUnit * 2, $bg: #434343, $color: white);
+	@include fullBarWrapper($height: $baseUnit * 2, $bg: var(--themeFooter));
 }
 
 footer{
 	@include fullBar;
 	@include forTabletDown{
 		font-size: 0.75rem;
+	};
+	h4{
+		color: var(--themeFooterText);
 	}
 }
