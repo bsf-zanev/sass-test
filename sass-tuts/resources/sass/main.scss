@@ -11,7 +11,8 @@ $baseUnit: 2rem;
 	//The reason for so many variables is to have the least number of possible variables for the most number of possible unique colours in a single theme.
 	--themeHeader: #fff;
 	--themeHeaderText: #cf649a;
-	--themeOverlaySidebar: #{darken(#cf649a, 20%)};
+	--themeOverlaySidebar: #cf649a;
+	--themeOverlayText: #fff;
 	--themeNav: #cf649a;
 	--themeNavLink: #fff;
 	--themeNavLinkHover: #{lighten(#cf649a, 20%)};
