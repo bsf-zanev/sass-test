@@ -1,9 +1,13 @@
-import { createBaseThemes } from './themeFunctions.js';
+import { createBaseThemes, toggleThemeBar } from './themeFunctions.js';
 
-checkForPageOverflow();
-var themes = createBaseThemes();
-console.log(themes);
-// var themes contains an object of all Theme Arrays that conain a name and an object of all colors.
+window.onload = () => {
+    checkForPageOverflow();
+    createBaseThemes();
+    document.querySelector('.navTheme').addEventListener('click',  toggleThemeBar);
+    document.querySelector('.themeSelectorOverlay').addEventListener('click', toggleThemeBar);
+    document.querySelector('.themeClose').addEventListener('click',  toggleThemeBar);
+    // var themes contains an object of all Theme Arrays that contain a name and an object of all colors.
+}
 
 /* ------- Functions -------*/
 

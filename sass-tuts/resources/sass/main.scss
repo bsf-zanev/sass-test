@@ -120,6 +120,7 @@ h1, h2, h3, h4, h5, h6{
 body{
 	margin: 0;
 	color: var(--themeTertiary);
+	overflow-x: hidden;
 }
 
 .headerWrapper{
@@ -134,7 +135,7 @@ header{
 	}
 	@include forTabletDown{
 		flex-direction: column;
-		img{
+		svg{
 			max-height: 70% !important;
 		}
 		h1{
@@ -150,7 +151,7 @@ header{
 }
 
 .navWrapper{
-	@include fullBarWrapper($height: $baseUnit + math.div($baseUnit, 2), $shadow: true, $bg: var(--themeNav), $layer: 8);
+	@include fullBarWrapper($height: $baseUnit + math.div($baseUnit, 2), $shadow: true, $bg: var(--themeNav), $layer: 7);
 }
 
 nav{
@@ -158,7 +159,6 @@ nav{
 	.navItem, .navTheme{
 		transition: color 250ms;
 	}
-
 }
 
 .navLaptop{	
@@ -191,6 +191,14 @@ nav{
 .navTheme{
 	position: absolute;
 	right: math.div($baseUnit, 2);
+	color: var(--themeNavLink);
+	&:hover{
+		cursor: pointer;
+		color: var(--themeNavLinkHover);
+	}
+}
+
+.themeClose{
 	color: var(--themeNavLink);
 	&:hover{
 		cursor: pointer;
