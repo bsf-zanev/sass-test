@@ -17,6 +17,7 @@
   background-color: var(--themeOverlaySidebar);
   box-shadow: 1rem 0 2rem 2rem rgba(0, 0, 0, 0.5);
   z-index: 9;
+  overflow: hidden;
 }
 @media only screen and (min-width: 900px) {
   .themeSelectorPanel {
@@ -30,12 +31,18 @@
   border-bottom: 1px solid #fff;
 }
 
+.themeGridContainer {
+  display: grid;
+  width: 200%;
+  grid-template-columns: 50% 50%;
+}
+
 .themeOption {
   padding: 1rem;
   color: var(--themeOverlaySidebar);
   background-color: var(--themeOverlayText);
   border-bottom: 2px solid var(--themeOverlaySidebar);
-  transition-duration: 250ms;
+  transition: ease-in-out 200ms;
 }
 .themeOption:first-child {
   border-radius: 1rem 1rem 0 0;
