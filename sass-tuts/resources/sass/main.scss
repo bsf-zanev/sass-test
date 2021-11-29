@@ -3,6 +3,7 @@
 @use "sass:math";
 @use "sass:list";
 @import 'viewports';
+@import 'themeSelector';
 
 $baseUnit: 2rem;
 
@@ -19,19 +20,19 @@ $baseUnit: 2rem;
 	--themeSideContent: #{lighten(#cf649a, 20%)};
 	--themeFooter: #434343;
 	--themeFooterText: #fff;
-	--themePrimary: #cf649a;									//Headings, Links, Buttons
-	--themePrimaryLight: #{lighten(#cf649a, 20%)};				//Link Hover, Button Hover
-	--themePrimaryDark: #{darken(#cf649a, 20%)};				//Button Click
-	--themeSecondary: #343434;									//Button Alts, Heading Alts
-	--themeSecondaryLight: #{lighten(#343434, 20%)};			//Button Alt Hover
-	--themeSecondaryDark: #{darken(#343434, 20%)};				//Button Alt Click
-	--themeTertiary: #343434;									//Text Color
+	--themePrimary: #cf649a; //Headings, Links, Buttons
+	--themePrimaryLight: #{lighten(#cf649a, 20%)}; //Link Hover, Button Hover
+	--themePrimaryDark: #{darken(#cf649a, 20%)}; //Button Click
+	--themeSecondary: #343434; //Button Alts, Heading Alts
+	--themeSecondaryLight: #{lighten(#343434, 20%)}; //Button Alt Hover
+	--themeSecondaryDark: #{darken(#343434, 20%)}; //Button Alt Click
+	--themeTertiary: #343434; //Text Color
 }
 
 //Create a theme sass file with all possible schemes as separate lists, and load the required one based on option selected.
 //Or scratch that, create a js martix of theme colours and store the selected theme as a cookie.
 
-@mixin fullBarWrapper ($height: $baseUnit, $shadow: false, $bg: var(--themeHeader), $layer: null){
+@mixin fullBarWrapper ($height: $baseUnit, $shadow: false, $shadowDirection: 0 -0.25rem, $bg: var(--themeHeader), $layer: null){
 	position: relative;
 	width: 100%;
 	height: $height;
@@ -39,7 +40,7 @@ $baseUnit: 2rem;
 	@if $layer{
 		z-index: $layer;
 	}
-	box-shadow: if($shadow, 0 -0.25rem 0.5rem 0.5rem rgba(0, 0, 0, 0.25), none);
+	box-shadow: if($shadow, $shadowDirection 0.5rem 0.5rem rgba($color: #000000, $alpha: 0.25), none);
 }
 
 @mixin fullBar ($align: center, $justify: center, $direction: row){
@@ -110,7 +111,6 @@ a{
 	}
 	*/
 }
-
 
 h1, h2, h3, h4, h5, h6{
 	color: var(--themePrimary);
@@ -225,19 +225,19 @@ nav{
 }
 
 .mainLeftSidebar{
-	box-shadow: -1rem 0 0.5rem -1rem rgba(0, 0, 0, 1) inset;
+	box-shadow: -1rem 0 0.5rem -1rem rgba($color: #000000, $alpha: 0.25) inset;
 	grid-column: 1 / 3;
 	@include mainGridCommons($type: sidebar left);
 }
 
 .mainRightSidebar{
-	box-shadow: 1rem 0 0.5rem -1rem rgba(0, 0, 0, 1) inset;
+	box-shadow: 1rem 0 0.5rem -1rem rgba($color: #000000, $alpha: 0.25) inset;
 	grid-column: 11 / 13;
 	@include mainGridCommons($type: sidebar right);
 }
 
 .footerWrapper{
-	@include fullBarWrapper($height: $baseUnit * 2, $bg: var(--themeFooter));
+	@include fullBarWrapper($height: $baseUnit * 2, $shadow: true, $shadowDirection: 0 0.25rem, $bg: var(--themeFooter), $layer: 10);
 }
 
 footer{
